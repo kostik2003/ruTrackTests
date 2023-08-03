@@ -12,7 +12,9 @@ const { JSDOM } = require("jsdom");
 // });
 
 const setFunc = async () => {
-  const res = await axios.get("https://rutracker.org/forum/index.php?c=4");
+  const res = await axios.get("https://rutracker.org/forum/index.php", {
+    responseType: "arraybuffer",
+  });
   let html = res.data;
 
   const dom = new JSDOM(html);
@@ -32,23 +34,24 @@ const setFunc = async () => {
   );
 
   const newObj = {};
-  const forumObject = {};
 
   testDivs.forEach((node) => {
     newObj[node.id] = {
-      id: node.id,
       url: node.querySelector("a").getAttribute("href"),
-      //   text: node.
+      text: node.querySelector("a").textContent,
+      subText: {
+        text: node.querySelector("h4").textContent,
+        subForm: {
+          text: {},
+        },
+      },
     };
-  }); //нужно как то взять открытое меню, и достать из тиго меню всю информацию
-  //   //   console.log(newObj);
-  //   testDivsForums.forEach((node) => {
-  //     forumObject[node.id] = {
-  //       url: node.querySelector("a").getAttribute("href"),
-  //     };
-  //   });
-  //   console.log(forumObject);
-  console.log(newObj);
+  });
+  console.log(
+    testDivs.forEach((node) => {
+      console.log(newObj);
+    })
+  );
 };
 
 setFunc();
